@@ -1,22 +1,37 @@
 {
+  //编译选项
   "compilerOptions": {
+    //目标代码：将ts代码转化为es6及以后的代码（最终还是会通过babel对代码进行转化，而babel会根据 .browserslistrc文件 将其转化为浏览器适配的es语法）
     "target": "esnext",
+    //使用的模块化方案：ES Module(可以设置成commonjs等)
     "module": "esnext",
+    //打开语法的严格检查模式
     "strict": true,
+    //是否对jsx进行转化：preserve为保留  不进行转化
     "jsx": "preserve",
+    //导入的辅助功能
     "importHelpers": true,
+    //按照node的方式去解析模板
     "moduleResolution": "node",
+    //跳过对一些库的类型检测
     "skipLibCheck": true,
+    //下面两个选项：设置es module和commonjs可以进行混合使用
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    //是否生成映射文件（ts --> js）
     "sourceMap": true,
+    //文件路径在解析时基本的url
     "baseUrl": ".",
+    //指定具体需要解析使用的类型，一般使用默认值，一般会自动使用target选项中指定的语法的类型
     "types": ["webpack-env"],
+    //路径解析（类似与webpack中的alias）
     "paths": {
       "@/*": ["src/*"]
     },
+    //指定在项目中可以使用那些库中的类型（Proxy/Window/Document）
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
+  //设定那些文件需要进行ts解析
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
@@ -24,5 +39,6 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
+  //排除：当include里包含的文件引用了node_module中的文件，会将这些文件进行排除，但对引用的类型会进行解析
   "exclude": ["node_modules"]
 }

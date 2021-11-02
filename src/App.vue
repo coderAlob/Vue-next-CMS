@@ -1,8 +1,5 @@
 <template>
-  <div>
-    <h2>{{ $store.state.name }}</h2>
-    <router-link to="/login">登录</router-link>
-    <router-link to="/main">首页</router-link>
+  <div class="app">
     <router-view></router-view>
   </div>
 </template>
@@ -11,15 +8,16 @@
 import { defineComponent } from "vue"
 
 export default defineComponent({
+  name: "App",
   setup() {
     return {}
   }
 })
 </script>
 
-<style lang="css">
-#app {
-  text-align: center;
-  margin-top: 60px;
+<style lang="less">
+.app {
+  width: 100%;
+  height: 100%;
 }
 </style>
