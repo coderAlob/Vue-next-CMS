@@ -9,7 +9,7 @@ import "./assets/css/index.css"
 import { registerApp } from "./global/index"
 
 // 网络请求文件
-import alobRequest from "./network/index"
+// import alobRequest from "./network/index"
 // axios的基本使用案例
 // import "./network/axios-demo"
 
@@ -23,10 +23,10 @@ app.use(router)
 app.use(store)
 app.mount("#app")
 
-alobRequest.request({
-  url: "/home/multidata",
-  method: "get"
-})
+// alobRequest.request({
+//   url: "/home/multidata",
+//   method: "get"
+// })
 
 //专有拦截器
 // alobRequest.request({

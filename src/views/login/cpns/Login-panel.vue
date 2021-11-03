@@ -6,7 +6,7 @@
         <template #label>
           <span><i class="el-icon-user-solid"></i>账号登录</span>
         </template>
-        <login-account></login-account>
+        <login-account ref="accountRef"></login-account>
       </el-tab-pane>
       <el-tab-pane label="消息中心">
         <template #label>
@@ -39,8 +39,17 @@ export default defineComponent({
   },
   setup() {
     const isKeepPassword = ref(false)
+    const accountRef = ref<InstanceType<typeof LoginAccount>>()
+
+    const handleLoginClick = () => {
+      console.log("立即登录")
+      accountRef.value?.loginAction(isKeepPassword.value)
+    }
+
     return {
-      isKeepPassword
+      isKeepPassword,
+      accountRef,
+      handleLoginClick
     }
   }
 })
