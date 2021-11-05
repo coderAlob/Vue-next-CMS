@@ -1,11 +1,14 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios"
-export interface AlobInterceptors {
+
+export interface AlobInterceptors<T = AxiosResponse> {
   requestInterceptor?: (config: AxiosRequestConfig) => AxiosRequestConfig
   requestInterceptorCatch?: (error: any) => any
-  responseInterceptor?: (res: AxiosResponse) => AxiosResponse
+  responseInterceptor?: (res: T) => T
   responseInterceptorCatch?: (error: any) => any
 }
 
-export interface AlobRequestConfig extends AxiosRequestConfig {
-  interceptors?: AlobInterceptors
+export interface AlobRequestConfig<T = AxiosResponse>
+  extends AxiosRequestConfig {
+  interceptors?: AlobInterceptors<T>
+  showLoading?: boolean
 }
