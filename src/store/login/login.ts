@@ -66,16 +66,18 @@ const loginModule: Module<LoginState, RootState> = {
       console.log("手机登录验证", payload)
     },
     loadLocalLogin({ commit }) {
+      console.log("执行了")
+
       const token = localCache.getCache("token")
       if (token) {
         commit("changeToken", token)
       }
       const userInfo = localCache.getCache("userInfo")
-      if (token) {
+      if (userInfo) {
         commit("changeUserInfo", userInfo)
       }
       const userMenu = localCache.getCache("userMenu")
-      if (token) {
+      if (userMenu) {
         commit("changeUserMenu", userMenu)
       }
     }

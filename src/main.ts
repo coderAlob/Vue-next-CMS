@@ -17,10 +17,14 @@ import { registerApp } from "./global/index"
 import router from "./router"
 import store from "./store"
 
+//导入更新state的方法
+import { setupStore } from "@/store"
+
 const app = createApp(App)
 app.use(registerApp)
 app.use(router)
 app.use(store)
+setupStore()
 app.mount("#app")
 
 // alobRequest.request({
