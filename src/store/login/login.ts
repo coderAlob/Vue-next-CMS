@@ -1,6 +1,6 @@
 import { Module } from "vuex"
-import RootState from "../type"
-import LoginState from "./login-types"
+import { RootState } from "../type"
+import { LoginState } from "./login-types"
 import router from "@/router"
 
 import {
@@ -66,8 +66,6 @@ const loginModule: Module<LoginState, RootState> = {
       console.log("手机登录验证", payload)
     },
     loadLocalLogin({ commit }) {
-      console.log("执行了")
-
       const token = localCache.getCache("token")
       if (token) {
         commit("changeToken", token)
