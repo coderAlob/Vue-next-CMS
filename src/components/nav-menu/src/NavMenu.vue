@@ -2,7 +2,7 @@
   <div class="nav-menu">
     <div class="logo">
       <img src="~@/assets/img/logo.svg" alt="logo" class="img" />
-      <span class="title">Vue3+TypeScript</span>
+      <span class="title" v-if="!collapse">Vue3+TypeScript</span>
     </div>
     <el-menu
       default-active="39"
@@ -10,7 +10,8 @@
       background-color="#0c2135"
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
-      unique-opened="true"
+      :unique-opened="true"
+      :collapse="collapse"
     >
       <template v-for="item in userMenu" :key="item.id">
         <!-- 二级菜单 -->
@@ -47,6 +48,12 @@ import { defineComponent, computed } from "vue"
 import { useStore } from "@/store"
 
 export default defineComponent({
+  props: {
+    collapse: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const store = useStore()
     const userMenu = computed(() => store.state.loginModule.userMenu)
