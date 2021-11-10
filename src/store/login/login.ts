@@ -10,7 +10,9 @@ import {
 } from "@/network/login/login"
 import { Account } from "@/network/login/types"
 
+//导入自定义方法
 import localCache from "@/utils/cache"
+import { mapMenuToRoutes } from "@/utils/map-menu"
 
 //Module类型必须传入两个泛型参数，  第一个为当前模块使用的类型，第二个为根模块使用的类型
 const loginModule: Module<LoginState, RootState> = {
@@ -31,6 +33,13 @@ const loginModule: Module<LoginState, RootState> = {
     },
     changeUserMenu(state, userMenu: any) {
       state.userMenu = userMenu
+
+      //根据当前的userMenu进行路由的动态映射
+      const routes = mapMenuToRoutes(userMenu)
+
+      routes.forEach((route) => {
+        router.addRoute("main", route)
+      })
     }
   },
   actions: {
