@@ -5,6 +5,7 @@
       :class="isFold ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
       @click="handleFoldChange"
     ></i>
+    <span>header</span>
   </div>
 </template>
 
