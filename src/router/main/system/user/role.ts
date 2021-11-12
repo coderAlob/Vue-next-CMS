@@ -1,6 +1,6 @@
 const role = () => import("@/views/main/system/user/role.vue")
 export default {
-  path: "/main/system/user",
+  path: "/main/system/role",
   name: "role",
   component: role,
   children: []

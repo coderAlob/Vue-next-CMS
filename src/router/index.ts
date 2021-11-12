@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import type { RouteRecordRaw } from "vue-router"
 
 import localCache from "@/utils/cache"
+import { firstMenu } from "@/utils/map-menu"
 
 const routes: RouteRecordRaw[] = [
   //设置重定向为main页面
@@ -39,6 +40,9 @@ router.beforeEach((to) => {
     if (!token) {
       return "/login"
     }
+  }
+  if (to.path == "/main") {
+    return firstMenu.url
   }
 })
 

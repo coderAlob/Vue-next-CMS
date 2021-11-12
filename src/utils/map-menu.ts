@@ -1,4 +1,7 @@
+import { BreadCrumb } from "@/base-ui/breadCrumb/types"
 import { RouteRecordRaw } from "vue-router"
+
+let firstMenu: any = null
 
 export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
   const routes: RouteRecordRaw[] = []
@@ -12,6 +15,7 @@ export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
       3.正则匹配规则
   */
   const routeFiles = require.context("../router/main", true, /\.ts$/)
+
   routeFiles.keys().forEach((key) => {
     //添加匹配到的文件
     const route = require("../router/main" + key.split(".")[1])
@@ -28,6 +32,9 @@ export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
         if (route) {
           routes.push(route)
         }
+        if (!firstMenu) {
+          firstMenu = menu
+        }
       } else {
         _recurseGetRoute(menu.children)
       }
@@ -38,3 +45,35 @@ export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
 
   return routes
 }
+//通过路由路径匹配相应的Menu
+export function pathMapToMenu(
+  userMenu: any[],
+  currentPath: string,
+  breadCrumb?: BreadCrumb[]
+): any {
+  for (const menu of userMenu) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        breadCrumb?.push({ name: menu.name })
+        breadCrumb?.push({ name: findMenu.name })
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+}
+
+//通过当前路由匹配面包屑
+export function pathMapToBreadCrumbs(
+  userMenu: any[],
+  currentPath: string
+): any {
+  const breadCrumbs: BreadCrumb[] = []
+  pathMapToMenu(userMenu, currentPath, breadCrumbs)
+
+  return breadCrumbs
+}
+
+export { firstMenu }

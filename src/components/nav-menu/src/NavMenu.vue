@@ -5,7 +5,7 @@
       <span class="title" v-if="!collapse">Vue3+TypeScript</span>
     </div>
     <el-menu
-      default-active="39"
+      :default-active="defaultValue"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
@@ -24,7 +24,10 @@
             </template>
             <!-- 遍历其中的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handleMenuItemClick(subitem)"
+              >
                 <i v-if="subitem.icon" :class="subitem.icon"></i>
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
@@ -44,8 +47,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue"
+import { defineComponent, computed, ref } from "vue"
 import { useStore } from "@/store"
+import { useRouter, useRoute } from "vue-router"
+
+import { pathMapToMenu } from "@/utils/map-menu"
 
 export default defineComponent({
   props: {
@@ -58,8 +64,27 @@ export default defineComponent({
     const store = useStore()
     const userMenu = computed(() => store.state.loginModule.userMenu)
 
+    //获取所有路由对象
+    const router = useRouter()
+    //获取当前路由以匹配userMenu中的menu
+    const route = useRoute()
+    //获取当前的路由路径
+    const currentPath = route.path
+
+    //调用pathMapToMenu方法获取对应的menu的id值赋值给defaultValue绑定到el-menu组件的default-active属性，使其默认选中当前路由对象
+    const currentMenu = pathMapToMenu(userMenu.value, currentPath)
+
+    const defaultValue = ref(currentMenu.id + "")
+
+    const handleMenuItemClick = (item: any) => {
+      router.push({
+        path: item.url ?? "/not-found"
+      })
+    }
     return {
-      userMenu
+      userMenu,
+      handleMenuItemClick,
+      defaultValue
     }
   }
 })
