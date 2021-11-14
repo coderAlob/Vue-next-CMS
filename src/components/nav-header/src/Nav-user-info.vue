@@ -21,7 +21,10 @@
           >
           <el-dropdown-item icon="el-icon-goblet">会员中心</el-dropdown-item>
           <el-dropdown-item icon="el-icon-setting">账号设置</el-dropdown-item>
-          <el-dropdown-item divided icon="el-icon-circle-close"
+          <el-dropdown-item
+            divided
+            icon="el-icon-circle-close"
+            @click="quitSystem"
             >退出登录</el-dropdown-item
           >
         </el-dropdown-menu>
@@ -33,13 +36,20 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue"
 import { useStore } from "vuex"
+import { useRouter } from "vue-router"
 
 export default defineComponent({
   setup() {
     const store = useStore()
     const name = computed(() => store.state.name)
+    const router = useRouter()
+
+    const quitSystem = () => {
+      router.push("/login")
+    }
     return {
-      name
+      name,
+      quitSystem
     }
   }
 })

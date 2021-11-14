@@ -45,6 +45,7 @@ export function mapMenuToRoutes(userMenu: any[]): RouteRecordRaw[] {
 
   return routes
 }
+
 //通过路由路径匹配相应的Menu
 export function pathMapToMenu(
   userMenu: any[],

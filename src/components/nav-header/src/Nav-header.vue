@@ -31,7 +31,6 @@ export default defineComponent({
     NavUserInfo,
     NavBreadCrumb
   },
-
   emits: ["foldChange"],
   setup(props, { emit }) {
     const isFold = ref(false)

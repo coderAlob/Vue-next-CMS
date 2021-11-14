@@ -41,6 +41,7 @@ router.beforeEach((to) => {
       return "/login"
     }
   }
+  //如果跳转的页面是main页面，对其进行路由重定向
   if (to.path == "/main") {
     return firstMenu.url
   }

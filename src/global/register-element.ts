@@ -23,7 +23,12 @@ import {
   ElDropdownMenu,
   ElAvatar,
   ElBreadcrumb,
-  ElBreadcrumbItem
+  ElBreadcrumbItem,
+  ElRow,
+  ElDatePicker,
+  ElSelect,
+  ElOption,
+  ElCol
 } from "element-plus"
 
 import "element-plus/lib/theme-chalk/base.css"
@@ -52,7 +57,12 @@ const components = [
   ElDropdownMenu,
   ElAvatar,
   ElBreadcrumb,
-  ElBreadcrumbItem
+  ElBreadcrumbItem,
+  ElCol,
+  ElDatePicker,
+  ElSelect,
+  ElOption,
+  ElRow
 ]
 
 export default function (app: App): void {
