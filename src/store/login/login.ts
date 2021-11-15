@@ -1,5 +1,5 @@
 import { Module } from "vuex"
-import { RootState } from "../type"
+import { RootState } from "../types"
 import { LoginState } from "./login-types"
 import router from "@/router"
 

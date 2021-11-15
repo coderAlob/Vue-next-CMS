@@ -1,25 +1,30 @@
 <template>
   <div class="user">
-    <div class="search">
-      <search-form v-bind="searchFormConfig" />
-    </div>
+    <search-page :searchFormConfig="searchFormConfig"></search-page>
+    <content-page :contentConfig="contentConfig"></content-page>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue"
 
-import SearchForm, { Form } from "@/base-ui/form"
+import SearchPage from "@/components/search-page"
+import ContentPage from "@/components/content-page"
 
 import { searchFormConfig } from "./config/search.config"
+import { contentConfig } from "./config/content.config"
 
 export default defineComponent({
   name: "user",
   components: {
-    SearchForm
+    SearchPage,
+    ContentPage
   },
   setup() {
-    return { searchFormConfig }
+    return {
+      searchFormConfig,
+      contentConfig
+    }
   }
 })
 </script>

@@ -25,6 +25,7 @@ app.use(registerApp)
 app.use(store)
 setupStore()
 app.use(router)
+
 app.mount("#app")
 
 // alobRequest.request({

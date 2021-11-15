@@ -28,7 +28,10 @@ import {
   ElDatePicker,
   ElSelect,
   ElOption,
-  ElCol
+  ElCol,
+  ElTable,
+  ElTableColumn,
+  ElPagination
 } from "element-plus"
 
 import "element-plus/lib/theme-chalk/base.css"
@@ -62,7 +65,10 @@ const components = [
   ElDatePicker,
   ElSelect,
   ElOption,
-  ElRow
+  ElRow,
+  ElTable,
+  ElTableColumn,
+  ElPagination
 ]
 
 export default function (app: App): void {

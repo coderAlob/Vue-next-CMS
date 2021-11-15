@@ -1,8 +1,10 @@
 import { createStore, useStore as useVuexStore, Store } from "vuex"
 
-import { RootState, StoreType } from "./type"
+import { RootState, StoreType } from "./types"
 
+//导入子模块
 import loginModule from "./login/login"
+import systemModule from "./main/system/system"
 
 const store = createStore<RootState>({
   state: () => {
@@ -14,7 +16,8 @@ const store = createStore<RootState>({
   mutations: {},
   actions: {},
   modules: {
-    loginModule
+    loginModule,
+    systemModule
   }
 })
 
