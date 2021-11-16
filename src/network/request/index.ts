@@ -67,7 +67,7 @@ class alobRequest {
 
         // 例子: 判断不同的HttpErrorCode显示不同的错误信息
         if (err.response.status === 404) {
-          console.log("404的错误~")
+          console.log("404的错误")
         }
         return err
       }

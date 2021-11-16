@@ -9,31 +9,62 @@ const systemModule: Module<SystemState, RootState> = {
   namespaced: true,
   state() {
     return {
-      userList: [],
-      userCount: 0
+      usersList: [],
+      usersCount: 0,
+      roleList: [],
+      roleCount: 0,
+      goodsList: [],
+      goodsCount: 0
     }
   },
   mutations: {
-    changeUserList(state, payload: any[]) {
-      state.userList = payload
+    changeUsersList(state, payload: any[]) {
+      state.usersList = payload
     },
-    changeUserCount(state, payload: number) {
-      state.userCount = payload
+    changeUsersCount(state, payload: number) {
+      state.usersCount = payload
+    },
+    changeRoleList(state, payload: any[]) {
+      state.roleList = payload
+    },
+    changeRoleCount(state, payload: number) {
+      state.roleCount = payload
+    },
+    changeGoodsList(state, payload: any[]) {
+      state.goodsList = payload
+    },
+    changeGoodsCount(state, payload: number) {
+      state.goodsCount = payload
     }
   },
   actions: {
     async getPageListAction({ commit }, payload: any) {
+      //根据传递过来的pageName决定发送网络请求的URL
+      const pageName = payload.pageName
+      const pageUrl = `/${pageName}/list`
+
       //发送网络请求并将请求的结果保存到本地
-      const pageResult = await getPageListData(
-        payload.pageUrl,
-        payload.queryInfo
-      )
+      const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       const { list, totalCount } = pageResult.data
 
-      //修改state中的userList属性
-      commit("changeUserList", list)
-      //修改state中的userCount
-      commit("changeUserCount", totalCount)
+      //将首字母大写后返回
+      const changePageName =
+        pageName.slice(0, 1).toUpperCase() + pageName.slice(1)
+
+      commit(`change${changePageName}List`, list)
+      commit(`change${changePageName}Count`, totalCount)
+    }
+  },
+  getters: {
+    getListData(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}List`]
+      }
+    },
+    getListCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`]
+      }
     }
   }
 }

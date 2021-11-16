@@ -2,7 +2,9 @@
   <div class="user-list">
     <div class="header">
       <slot name="header">
-        <div class="title">{{ title }}</div>
+        <div class="title">
+          <slot name="title">{{ title }}</slot>
+        </div>
         <div class="handler">
           <slot name="headerHandler"></slot>
         </div>
@@ -23,7 +25,7 @@
         label="序号"
       ></el-table-column>
       <template v-for="propItem in propsList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <!-- row:将这一行的数据传递出去 -->
             <slot :name="propItem.slotName" :row="scope.row">
@@ -36,11 +38,11 @@
     <div class="footer">
       <slot name="footer">
         <el-pagination
-          v-model:currentPage="currentPage4"
-          :page-sizes="[10, 20, 30, 40]"
-          :page-size="10"
+          :currentPage="page.currentPage"
+          :page-sizes="[10, 20, 30]"
+          :page-size="page.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="userCount"
+          :total="listCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
@@ -55,13 +57,13 @@ import { defineComponent } from "vue"
 
 export default defineComponent({
   props: {
-    userCount: {
-      type: Number,
-      default: 10
-    },
     listData: {
       type: Array,
       required: true
+    },
+    listCount: {
+      type: Number,
+      default: 0
     },
     propsList: {
       type: Array,
@@ -78,10 +80,31 @@ export default defineComponent({
     title: {
       type: String,
       required: true
+    },
+    page: {
+      type: Object,
+      default: () => {
+        return {
+          currentPage: 0,
+          pageSize: 10
+        }
+      }
     }
   },
-  setup() {
-    return {}
+  emits: ["update:page"],
+  setup(props, { emit }) {
+    const handleSizeChange = (pageSize: number) => {
+      emit("update:page", { ...props.page, pageSize })
+    }
+
+    const handleCurrentChange = (currentPage: number) => {
+      emit("update:page", { ...props.page, currentPage })
+    }
+
+    return {
+      handleSizeChange,
+      handleCurrentChange
+    }
   }
 })
 </script>

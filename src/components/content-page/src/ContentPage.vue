@@ -1,25 +1,17 @@
 <template>
   <div class="content-page">
     <user-list
-      :listData="userList"
+      :listData="dataList"
+      :listCount="dataCount"
       v-bind="contentConfig"
-      :userCount="userCount"
+      v-model:page="pageInfo"
     >
       <!-- list的header -->
       <template #headerHandler>
-        <el-button size="mini" type="primary">创建用户</el-button>
+        <el-button size="mini" type="primary"> 创建 </el-button>
       </template>
 
       <!-- table的主体 -->
-      <template #status="scope">
-        <el-button
-          plain
-          :type="scope.row.enable ? 'success' : 'danger'"
-          size="mini"
-        >
-          {{ scope.row.enable ? "启用" : "禁用" }}
-        </el-button>
-      </template>
       <template #createAt="scope">
         <strong> {{ $filters.formatTime(scope.row.createAt) }}</strong>
       </template>
@@ -34,12 +26,21 @@
           删除
         </el-button>
       </template>
+      <template
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
+      </template>
     </user-list>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue"
+import { defineComponent, computed, ref, watch } from "vue"
 import { useStore } from "@/store"
 
 import UserList from "@/base-ui/list"
@@ -49,30 +50,61 @@ export default defineComponent({
     contentConfig: {
       type: Object,
       required: true
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   components: {
     UserList
   },
-  setup() {
+  setup(props) {
     const store = useStore()
 
-    //进入页面时进行状态分发，执行网络请求
-    store.dispatch("systemModule/getPageListAction", {
-      pageUrl: "/users/list",
-      //传入参数
-      queryInfo: {
-        offset: 0,
-        size: 10
-      }
+    //设置页面信息
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    //对pageInfo进行侦听,如果发生改变则重新发送网络请求
+    watch(pageInfo, () => getPageDate())
+
+    //发送网络请求
+    const getPageDate = (queryInfo: any = {}) => {
+      //进入页面时进行状态分发，执行网络请求
+      store.dispatch("systemModule/getPageListAction", {
+        pageName: props.pageName,
+        //传入参数
+        queryInfo: {
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
+          //对传入的数据进行拼接
+          ...queryInfo
+        }
+      })
+    }
+    getPageDate()
+
+    //从vuex中获取数据
+    const dataList = computed(() =>
+      store.getters[`systemModule/getListData`](props.pageName)
+    )
+    const dataCount = computed(() =>
+      store.getters[`systemModule/getListCount`](props.pageName)
+    )
+
+    //获取其它的动态插槽
+    const otherPropSlots = props.contentConfig.propsList.filter((item: any) => {
+      if (item.slotName === "createAt") return false
+      if (item.slotName === "updateAt") return false
+      if (item.slotName === "handler") return false
+      return true
     })
 
-    const userList = computed(() => store.state.systemModule.userList)
-    const userCount = computed(() => store.state.systemModule.userCount)
-
     return {
-      userList,
-      userCount
+      dataList,
+      dataCount,
+      getPageDate,
+      pageInfo,
+      otherPropSlots
     }
   }
 })

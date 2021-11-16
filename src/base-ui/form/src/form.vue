@@ -14,13 +14,13 @@
               >
                 <el-input
                   :placeholder="item.placeholder"
-                  v-model="formDate[`${item.field}`]"
+                  v-model="formData[`${item.field}`]"
                 />
               </template>
               <template v-else-if="item.type === 'select'">
                 <el-select
                   style="width: 100%"
-                  v-model="formDate[`${item.field}`]"
+                  v-model="formData[`${item.field}`]"
                   :placeholder="item.placeholder"
                 >
                   <template v-for="option in item.options" :key="option.title">
@@ -34,7 +34,7 @@
                 <el-date-picker
                   v-bind="item.otherOptions"
                   style="width: 100%"
-                  v-model="formDate[`${item.field}`]"
+                  v-model="formData[`${item.field}`]"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -85,11 +85,11 @@ export default defineComponent({
   emits: ["update:modelValue"],
   setup(props, { emit }) {
     //如果直接使用props.modelValue实际上还是引用原对象，会对父组件传来的数据进行直接修改，而使用三点运算符则是重新生成一个对象对其进行保存
-    const formDate = ref({ ...props.modelValue })
+    const formData = ref({ ...props.modelValue })
 
     //对保存下来的数据进行监听，如果被修改则发送emit事件，通知父组件修改状态
     watch(
-      formDate,
+      formData,
       (newValue) => {
         emit("update:modelValue", newValue)
       },
@@ -99,7 +99,7 @@ export default defineComponent({
     )
 
     return {
-      formDate
+      formData
     }
   }
 })

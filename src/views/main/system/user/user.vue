@@ -1,7 +1,25 @@
 <template>
   <div class="user">
-    <search-page :searchFormConfig="searchFormConfig"></search-page>
-    <content-page :contentConfig="contentConfig"></content-page>
+    <search-page
+      :searchFormConfig="searchFormConfig"
+      @resetBtnClick="handleReset"
+      @queryBtnClick="handleQuery"
+    />
+    <content-page
+      ref="contentPageRef"
+      :contentConfig="contentConfig"
+      :pageName="'users'"
+    >
+      <template #status="scope">
+        <el-button
+          plain
+          :type="scope.row.enable ? 'success' : 'danger'"
+          size="mini"
+        >
+          {{ scope.row.enable ? "启用" : "禁用" }}
+        </el-button>
+      </template>
+    </content-page>
   </div>
 </template>
 
@@ -14,6 +32,8 @@ import ContentPage from "@/components/content-page"
 import { searchFormConfig } from "./config/search.config"
 import { contentConfig } from "./config/content.config"
 
+import { usePageSearch } from "@/hooks/usePageSearch"
+
 export default defineComponent({
   name: "user",
   components: {
@@ -21,9 +41,14 @@ export default defineComponent({
     ContentPage
   },
   setup() {
+    const [contentPageRef, handleReset, handleQuery] = usePageSearch()
+
     return {
       searchFormConfig,
-      contentConfig
+      contentConfig,
+      handleReset,
+      handleQuery,
+      contentPageRef
     }
   }
 })

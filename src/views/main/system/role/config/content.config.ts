@@ -1,9 +1,7 @@
 export const contentConfig = {
   propsList: [
-    { prop: "name", label: "用户名", minWidth: "100" },
-    { prop: "realname", label: "真实姓名", minWidth: "100" },
-    { prop: "cellphone", label: "手机号码", minWidth: "120" },
-    { prop: "enable", label: "状态", minWidth: "100", slotName: "status" },
+    { prop: "name", label: "角色名", minWidth: "100" },
+    { prop: "intro", label: "权限介绍", minWidth: "100" },
     {
       prop: "createAt",
       label: "创建时间",
@@ -25,5 +23,5 @@ export const contentConfig = {
   //设置是否显示选中列
   showSelectColumn: true,
 
-  title: "用户列表"
+  title: "权限列表"
 }
