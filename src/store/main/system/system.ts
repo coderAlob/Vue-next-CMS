@@ -14,7 +14,11 @@ const systemModule: Module<SystemState, RootState> = {
       roleList: [],
       roleCount: 0,
       goodsList: [],
-      goodsCount: 0
+      goodsCount: 0,
+      menuList: [],
+      menuCount: 0,
+      departmentList: [],
+      departmentCount: 0
     }
   },
   mutations: {
@@ -35,6 +39,18 @@ const systemModule: Module<SystemState, RootState> = {
     },
     changeGoodsCount(state, payload: number) {
       state.goodsCount = payload
+    },
+    changeMenuList(state, payload: any[]) {
+      state.menuList = payload
+    },
+    changeMenuCount(state, payload: number) {
+      state.menuCount = payload
+    },
+    changeDepartmentList(state, payload: any[]) {
+      state.departmentList = payload
+    },
+    changeDepartmentCount(state, payload: number) {
+      state.departmentCount = payload
     }
   },
   actions: {

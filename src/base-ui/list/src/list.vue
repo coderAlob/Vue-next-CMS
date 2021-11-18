@@ -10,13 +10,21 @@
         </div>
       </slot>
     </div>
-    <el-table :data="listData" style="width: 100%" border>
+    <el-table
+      :data="listData"
+      style="width: 100%"
+      border
+      v-bind="childrenProps"
+    >
+      <!-- 选中框列 -->
       <el-table-column
         v-if="showSelectColumn"
         type="selection"
         align="center"
         width="40"
       ></el-table-column>
+
+      <!-- 序号列 -->
       <el-table-column
         v-if="showIndexColumn"
         type="index"
@@ -35,7 +43,7 @@
         </el-table-column>
       </template>
     </el-table>
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer">
         <el-pagination
           :currentPage="page.currentPage"
@@ -77,6 +85,10 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    showFooter: {
+      type: Boolean,
+      default: true
+    },
     title: {
       type: String,
       required: true
@@ -89,6 +101,10 @@ export default defineComponent({
           pageSize: 10
         }
       }
+    },
+    childrenProps: {
+      type: Object,
+      default: () => ({ rowKey: "", treeProp: {} })
     }
   },
   emits: ["update:page"],

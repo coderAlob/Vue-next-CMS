@@ -77,4 +77,25 @@ export function pathMapToBreadCrumbs(
   return breadCrumbs
 }
 
+//通过传入userMenu匹配按钮权限
+export function mapMenuToPermissions(userMenu: any[]): string[] {
+  //创建一个空数组保存所有匹配到的权限
+  const permissions: string[] = []
+
+  //分析：按钮的权限都在type===3的Menu对象中，创建递归函数对所有Menu对象进行遍历，将所有匹配到的permission保存到预留数组中
+  const _recurseGetPermissions = (menus: any[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _recurseGetPermissions(menu.children ?? [])
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission)
+      }
+    }
+  }
+
+  //调用递归函数并返回该用户的所有权限
+  _recurseGetPermissions(userMenu)
+  return permissions
+}
+
 export { firstMenu }

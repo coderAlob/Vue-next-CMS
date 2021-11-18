@@ -6,7 +6,7 @@
       @queryBtnClick="handleQuery"
     />
     <content-page
-      ref="contentRef"
+      ref="contentPageRef"
       :contentConfig="contentConfig"
       :pageName="'role'"
     ></content-page>

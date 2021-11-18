@@ -8,7 +8,7 @@
     >
       <!-- list的header -->
       <template #headerHandler>
-        <el-button size="mini" type="primary"> 创建 </el-button>
+        <el-button v-if="isCreate" size="mini" type="primary"> 创建 </el-button>
       </template>
 
       <!-- table的主体 -->
@@ -19,10 +19,15 @@
         <strong> {{ $filters.formatTime(scope.row.updateAt) }}</strong>
       </template>
       <template #handler>
-        <el-button icon="el-icon-edit" size="mini" type="text">
+        <el-button v-if="isUpdate" icon="el-icon-edit" size="mini" type="text">
           编辑
         </el-button>
-        <el-button icon="el-icon-delete" size="mini" type="text">
+        <el-button
+          v-if="isDelete"
+          icon="el-icon-delete"
+          size="mini"
+          type="text"
+        >
           删除
         </el-button>
       </template>
@@ -43,6 +48,8 @@
 import { defineComponent, computed, ref, watch } from "vue"
 import { useStore } from "@/store"
 
+import { usePermission } from "@/hooks/use-permission"
+
 import UserList from "@/base-ui/list"
 
 export default defineComponent({
@@ -62,19 +69,26 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
 
+    const isCreate = usePermission(props.pageName, "create")
+    const isUpdate = usePermission(props.pageName, "update")
+    const isDelete = usePermission(props.pageName, "detele")
+    const isQuery = usePermission(props.pageName, "query")
+
     //设置页面信息
-    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     //对pageInfo进行侦听,如果发生改变则重新发送网络请求
     watch(pageInfo, () => getPageDate())
 
     //发送网络请求
     const getPageDate = (queryInfo: any = {}) => {
+      //判断是否具有查询权限
+      if (!isQuery) return
       //进入页面时进行状态分发，执行网络请求
       store.dispatch("systemModule/getPageListAction", {
         pageName: props.pageName,
         //传入参数
         queryInfo: {
-          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
           size: pageInfo.value.pageSize,
           //对传入的数据进行拼接
           ...queryInfo
@@ -104,7 +118,10 @@ export default defineComponent({
       dataCount,
       getPageDate,
       pageInfo,
-      otherPropSlots
+      otherPropSlots,
+      isCreate,
+      isUpdate,
+      isDelete
     }
   }
 })

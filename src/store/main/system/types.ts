@@ -5,6 +5,10 @@ export interface SystemState {
   roleCount: number
   goodsList: any[]
   goodsCount: number
+  menuList: any[]
+  menuCount: number
+  departmentList: any[]
+  departmentCount: number
 }
 
 export default SystemState

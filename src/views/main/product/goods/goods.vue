@@ -5,7 +5,11 @@
       @resetBtnClick="handleReset"
       @queryBtnClick="handleQuery"
     ></search-form>
-    <content-page :contentConfig="contentConfig" pageName="goods">
+    <content-page
+      :contentConfig="contentConfig"
+      pageName="goods"
+      ref="contentPageRef"
+    >
       <template #image="scope">
         <el-image
           style="width: 60px; height: 60px"

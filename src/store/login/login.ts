@@ -12,7 +12,7 @@ import { Account } from "@/network/login/types"
 
 //导入自定义方法
 import localCache from "@/utils/cache"
-import { mapMenuToRoutes } from "@/utils/map-menu"
+import { mapMenuToRoutes, mapMenuToPermissions } from "@/utils/map-menu"
 
 //Module类型必须传入两个泛型参数，  第一个为当前模块使用的类型，第二个为根模块使用的类型
 const loginModule: Module<LoginState, RootState> = {
@@ -21,7 +21,8 @@ const loginModule: Module<LoginState, RootState> = {
     return {
       token: "",
       userInfo: {},
-      userMenu: []
+      userMenu: [],
+      userPermissions: []
     }
   },
   mutations: {
@@ -40,6 +41,10 @@ const loginModule: Module<LoginState, RootState> = {
       routes.forEach((route) => {
         router.addRoute("main", route)
       })
+
+      //每次menu进行改变时就重新获取一次按钮权限
+      const permissions = mapMenuToPermissions(userMenu)
+      state.userPermissions = permissions
     }
   },
   actions: {
