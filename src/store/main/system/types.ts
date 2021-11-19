@@ -9,6 +9,8 @@ export interface SystemState {
   menuCount: number
   departmentList: any[]
   departmentCount: number
+  categoryList: any[]
+  categoryCount: number
 }
 
 export default SystemState

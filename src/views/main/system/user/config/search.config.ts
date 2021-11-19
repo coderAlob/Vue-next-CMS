@@ -32,8 +32,8 @@ export const searchFormConfig: Form = {
       label: "状态",
       placeholder: "请选择状态",
       options: [
-        { title: "状态1", value: "statusOne" },
-        { title: "状态2", value: "statusTwo" }
+        { title: "启用", value: "1" },
+        { title: "禁用", value: "0" }
       ]
     },
     {

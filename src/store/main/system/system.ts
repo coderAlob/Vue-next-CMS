@@ -18,7 +18,9 @@ const systemModule: Module<SystemState, RootState> = {
       menuList: [],
       menuCount: 0,
       departmentList: [],
-      departmentCount: 0
+      departmentCount: 0,
+      categoryList: [],
+      categoryCount: 0
     }
   },
   mutations: {
@@ -51,6 +53,12 @@ const systemModule: Module<SystemState, RootState> = {
     },
     changeDepartmentCount(state, payload: number) {
       state.departmentCount = payload
+    },
+    changeCategoryList(state, payload: any[]) {
+      state.categoryList = payload
+    },
+    changeCategoryCount(state, payload: number) {
+      state.categoryCount = payload
     }
   },
   actions: {
