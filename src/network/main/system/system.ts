@@ -13,3 +13,16 @@ export function deletePageDataById(url: string) {
     url: url
   })
 }
+
+export function editPageData(url: string, editData: any) {
+  return alobRequest.patch<SystemResult>({
+    url: url,
+    data: editData
+  })
+}
+export function createPageData(url: string, newData: any) {
+  return alobRequest.post<SystemResult>({
+    url: url,
+    data: newData
+  })
+}

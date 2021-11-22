@@ -11,9 +11,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false"
-            >确定</el-button
-          >
+          <el-button type="primary" @click="handleConfirmClick">确定</el-button>
         </span>
       </template>
     </el-dialog>
@@ -22,6 +20,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue"
+import { useStore } from "@/store"
 
 import SearchForm from "@/base-ui/form"
 
@@ -34,6 +33,10 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      required: true
     }
   },
   components: {
@@ -52,9 +55,31 @@ export default defineComponent({
       }
     )
 
+    //点击确定按钮的操作
+    const store = useStore()
+    const handleConfirmClick = () => {
+      dialogVisible.value = false
+      //根据defaultInfo是否为空判断是编辑操作还是创建操作
+      if (Object.keys(props.defaultInfo).length) {
+        //编辑操作
+        store.dispatch("systemModule/editPageDataAction", {
+          pageName: props.pageName,
+          editData: { ...formData.value },
+          id: props.defaultInfo.id
+        })
+      } else {
+        //新建操作
+        store.dispatch("systemModule/createPageDataAction", {
+          pageName: props.pageName,
+          newData: { ...formData.value }
+        })
+      }
+    }
+
     return {
       dialogVisible,
-      formData
+      formData,
+      handleConfirmClick
     }
   }
 })

@@ -5,7 +5,9 @@ import SystemState from "./types"
 //网络请求方法
 import {
   deletePageDataById,
-  getPageListData
+  getPageListData,
+  createPageData,
+  editPageData
 } from "@/network/main/system/system"
 
 const systemModule: Module<SystemState, RootState> = {
@@ -90,6 +92,36 @@ const systemModule: Module<SystemState, RootState> = {
       await deletePageDataById(pageUrl)
 
       //重新请求最新的数据
+      dispatch("getPageListAction", {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+    async editPageDataAction({ dispatch }, payload: any) {
+      //1. 编辑数据的请求
+      const { pageName, editData, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      await editPageData(pageUrl, editData)
+
+      //修改之后请求最新的数据
+      dispatch("getPageListAction", {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+    async createPageDataAction({ dispatch }, payload: any) {
+      //1. 创建数据的请求
+      const { pageName, newData } = payload
+      const pageUrl = `/${pageName}`
+      await createPageData(pageUrl, newData)
+
+      //修改之后请求最新的数据
       dispatch("getPageListAction", {
         pageName,
         queryInfo: {
