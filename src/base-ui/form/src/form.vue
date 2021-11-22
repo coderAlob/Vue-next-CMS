@@ -8,7 +8,11 @@
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
             <!-- 根据type属性渲染不同组件 -->
-            <el-form-item :label="item.label" :style="itemStyle">
+            <el-form-item
+              :label="item.label"
+              :style="itemStyle"
+              v-if="!item.isHidden"
+            >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >

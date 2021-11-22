@@ -8,7 +8,14 @@
     >
       <!-- list的header -->
       <template #headerHandler>
-        <el-button v-if="isCreate" size="mini" type="primary"> 创建 </el-button>
+        <el-button
+          v-if="isCreate"
+          size="mini"
+          type="primary"
+          @click="handleNewClick"
+        >
+          创建
+        </el-button>
       </template>
 
       <!-- table的主体 -->
@@ -18,8 +25,14 @@
       <template #updateAt="scope">
         <strong> {{ $filters.formatTime(scope.row.updateAt) }}</strong>
       </template>
-      <template #handler>
-        <el-button v-if="isUpdate" icon="el-icon-edit" size="mini" type="text">
+      <template #handler="scope">
+        <el-button
+          v-if="isUpdate"
+          icon="el-icon-edit"
+          size="mini"
+          type="text"
+          @click="handleEditClick(scope.row)"
+        >
           编辑
         </el-button>
         <el-button
@@ -27,6 +40,7 @@
           icon="el-icon-delete"
           size="mini"
           type="text"
+          @click="handleDeleteClick(scope.row)"
         >
           删除
         </el-button>
@@ -66,7 +80,8 @@ export default defineComponent({
   components: {
     UserList
   },
-  setup(props) {
+  emits: ["handleNewClick", "handleEditClick"],
+  setup(props, { emit }) {
     const store = useStore()
 
     const isCreate = usePermission(props.pageName, "create")
@@ -113,6 +128,20 @@ export default defineComponent({
       return true
     })
 
+    //删除/编辑/新建等操作
+    const handleDeleteClick = (item: any) => {
+      store.dispatch("systemModule/deletePageDataAction", {
+        pageName: props.pageName,
+        id: item.id
+      })
+    }
+    const handleNewClick = () => {
+      emit("handleNewClick")
+    }
+    const handleEditClick = (item: any) => {
+      emit("handleEditClick", item)
+    }
+
     return {
       dataList,
       dataCount,
@@ -121,7 +150,10 @@ export default defineComponent({
       otherPropSlots,
       isCreate,
       isUpdate,
-      isDelete
+      isDelete,
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick
     }
   }
 })

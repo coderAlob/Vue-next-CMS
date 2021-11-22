@@ -7,3 +7,9 @@ export function getPageListData(url: string, queryInfo: any) {
     data: queryInfo
   })
 }
+
+export function deletePageDataById(url: string) {
+  return alobRequest.delete<SystemResult>({
+    url: url
+  })
+}

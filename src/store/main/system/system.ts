@@ -3,7 +3,10 @@ import { RootState } from "@/store/types"
 import SystemState from "./types"
 
 //网络请求方法
-import { getPageListData } from "@/network/main/system/system"
+import {
+  deletePageDataById,
+  getPageListData
+} from "@/network/main/system/system"
 
 const systemModule: Module<SystemState, RootState> = {
   namespaced: true,
@@ -77,6 +80,23 @@ const systemModule: Module<SystemState, RootState> = {
 
       commit(`change${changePageName}List`, list)
       commit(`change${changePageName}Count`, totalCount)
+    },
+    async deletePageDataAction({ dispatch }, payload: any) {
+      //根据pageName和item的id拼接URL
+      const { pageName, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+
+      //发送delete请求
+      await deletePageDataById(pageUrl)
+
+      //重新请求最新的数据
+      dispatch("getPageListAction", {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
     }
   },
   getters: {
