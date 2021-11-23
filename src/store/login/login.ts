@@ -48,7 +48,7 @@ const loginModule: Module<LoginState, RootState> = {
     }
   },
   actions: {
-    async accountLoginAction({ commit }, payload: Account) {
+    async accountLoginAction({ commit, dispatch }, payload: Account) {
       //1.登录验证
       const loginResult = await accountLoginRequest(payload)
       const { id, token } = loginResult.data
@@ -56,6 +56,10 @@ const loginModule: Module<LoginState, RootState> = {
       localCache.setCache("token", token)
       //将token信息保存到state中
       commit("changeToken", token)
+
+      //发送初始化的请求
+      //子模块中调用根模块中的action的写法
+      dispatch("getInitialDataAction", null, { root: true })
 
       //2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
@@ -79,10 +83,14 @@ const loginModule: Module<LoginState, RootState> = {
     phoneLoginAction({ commit }, payload) {
       console.log("手机登录验证", payload)
     },
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = localCache.getCache("token")
       if (token) {
         commit("changeToken", token)
+
+        //发送初始化的请求
+        //子模块中调用根模块中的action的写法
+        dispatch("getInitialDataAction", null, { root: true })
       }
       const userInfo = localCache.getCache("userInfo")
       if (userInfo) {

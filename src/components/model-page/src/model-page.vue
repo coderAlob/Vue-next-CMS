@@ -1,13 +1,15 @@
 <template>
   <div class="model-page">
     <el-dialog
-      title="新建用户"
+      title="新建"
       v-model="dialogVisible"
       width="30%"
       center
       destroy-on-close
     >
       <search-form v-bind="modelConfig" v-model="formData"></search-form>
+      <!-- 预留插槽编写页面单独的功能 -->
+      <slot></slot>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
@@ -37,6 +39,10 @@ export default defineComponent({
     pageName: {
       type: String,
       required: true
+    },
+    otherInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
   components: {
@@ -64,14 +70,14 @@ export default defineComponent({
         //编辑操作
         store.dispatch("systemModule/editPageDataAction", {
           pageName: props.pageName,
-          editData: { ...formData.value },
+          editData: { ...formData.value, ...props.otherInfo },
           id: props.defaultInfo.id
         })
       } else {
         //新建操作
         store.dispatch("systemModule/createPageDataAction", {
           pageName: props.pageName,
-          newData: { ...formData.value }
+          newData: { ...formData.value, ...props.otherInfo }
         })
       }
     }

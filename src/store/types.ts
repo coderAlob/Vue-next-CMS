@@ -6,6 +6,7 @@ export interface RootState {
   age: number
   entireDeparment: any[]
   entireRole: any[]
+  entireMenu: any[]
 }
 
 export interface RootWithModule {

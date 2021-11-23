@@ -38,6 +38,8 @@ import { defineComponent, computed } from "vue"
 import { useStore } from "vuex"
 import { useRouter } from "vue-router"
 
+import localCache from "@/utils/cache"
+
 export default defineComponent({
   setup() {
     const store = useStore()
@@ -45,6 +47,7 @@ export default defineComponent({
     const router = useRouter()
 
     const quitSystem = () => {
+      localCache.deleteCache("token")
       router.push("/login")
     }
     return {

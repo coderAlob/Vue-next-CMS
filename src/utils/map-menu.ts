@@ -98,4 +98,24 @@ export function mapMenuToPermissions(userMenu: any[]): string[] {
   return permissions
 }
 
+//递归方法获取el-tree的子节点
+export function mapMenuLeftKeys(menuList: any[]) {
+  const leafKeys: number[] = []
+
+  //定义递归函数，判断是否为子节点，如果有children属性则继续对children属性进行遍历
+  const _recuresGetLeave = (menuList: any[]) => {
+    for (const menu of menuList) {
+      if (menu.children) {
+        _recuresGetLeave(menu.children)
+      } else {
+        leafKeys.push(menu.id)
+      }
+    }
+  }
+
+  _recuresGetLeave(menuList)
+
+  return leafKeys
+}
+
 export { firstMenu }

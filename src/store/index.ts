@@ -15,7 +15,8 @@ const store = createStore<RootState>({
       name: "Alob",
       age: 18,
       entireDeparment: [],
-      entireRole: []
+      entireRole: [],
+      entireMenu: []
     }
   },
   mutations: {
@@ -24,6 +25,9 @@ const store = createStore<RootState>({
     },
     changeEntireRole(state, list) {
       state.entireRole = list
+    },
+    changeEntireMenu(state, list) {
+      state.entireMenu = list
     }
   },
   actions: {
@@ -40,9 +44,14 @@ const store = createStore<RootState>({
       })
       const { list: roleList } = roleResult.data
 
+      //请求完整的权限数据
+      const menuResult = await getPageListData("/menu/list", [])
+      const { list: menuList } = menuResult.data
+
       //提交给mutation将数据保存在vuex中
       commit("changeEntireDeparment", departmentList)
       commit("changeEntireRole", roleList)
+      commit("changeEntireMenu", menuList)
     }
   },
   modules: {
@@ -53,7 +62,6 @@ const store = createStore<RootState>({
 
 export function setupStore() {
   store.dispatch("loginModule/loadLocalLogin")
-  store.dispatch("getInitialDataAction")
 }
 
 export function useStore(): Store<StoreType> {

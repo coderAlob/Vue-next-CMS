@@ -9,6 +9,8 @@
       :contentConfig="contentConfig"
       pageName="goods"
       ref="contentPageRef"
+      @handleEditClick="handleEdit"
+      @handleNewClick="handleNew"
     >
       <template #image="scope">
         <el-image
@@ -29,6 +31,12 @@
         </el-button>
       </template>
     </content-page>
+    <model-page
+      ref="modelPageRef"
+      :defaultInfo="defaultInfo"
+      :pageName="'goods'"
+      :modelConfig="modelConfig"
+    ></model-page>
   </div>
 </template>
 
@@ -37,26 +45,37 @@ import { defineComponent } from "vue"
 
 import SearchForm from "@/components/search-page"
 import ContentPage from "@/components/content-page"
+import ModelPage from "@/components/model-page"
 
 import { searchFormConfig } from "./config/search.config"
 import { contentConfig } from "./config/content.config"
+import { modelConfig } from "./config/model.config"
 
 import { usePageSearch } from "@/hooks/usePageSearch"
+import { usePageModel } from "@/hooks/usePageModel"
 
 export default defineComponent({
   name: "goods",
   components: {
     ContentPage,
-    SearchForm
+    SearchForm,
+    ModelPage
   },
   setup() {
     const [contentPageRef, handleReset, handleQuery] = usePageSearch()
+
+    const [modelPageRef, handleNew, handleEdit, defaultInfo] = usePageModel()
     return {
       contentConfig,
       searchFormConfig,
       contentPageRef,
       handleReset,
-      handleQuery
+      handleQuery,
+      modelConfig,
+      modelPageRef,
+      handleNew,
+      handleEdit,
+      defaultInfo
     }
   }
 })

@@ -1,7 +1,7 @@
 import { ref } from "vue"
 import ModelPage from "@/components/model-page"
 
-type callBackFn = () => void
+type callBackFn = (item?: any) => void
 
 export function usePageModel(newCB?: callBackFn, editCB?: callBackFn) {
   const modelPageRef = ref<InstanceType<typeof ModelPage>>()
@@ -20,7 +20,7 @@ export function usePageModel(newCB?: callBackFn, editCB?: callBackFn) {
     if (modelPageRef.value) {
       modelPageRef.value.dialogVisible = true
     }
-    editCB && editCB()
+    editCB && editCB(item)
   }
 
   return [modelPageRef, handleNew, handleEdit, defaultInfo]

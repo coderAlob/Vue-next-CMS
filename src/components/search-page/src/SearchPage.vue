@@ -58,7 +58,6 @@ export default defineComponent({
     const handleQueryClick = () => {
       //自定义事件，通知顶部页面调用contentPage中的网络请求方法，根据提交的条件作为参数重新发送网络请求
       emit("queryBtnClick", formData.value)
-      console.log(formData.value)
     }
 
     return {
