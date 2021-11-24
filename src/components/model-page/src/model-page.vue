@@ -56,6 +56,8 @@ export default defineComponent({
       () => props.defaultInfo,
       (newValue) => {
         for (const item of props.modelConfig.formItems) {
+          console.log(newValue)
+
           formData.value[`${item.field}`] = newValue[`${item.field}`]
         }
       }

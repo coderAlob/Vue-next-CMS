@@ -5,6 +5,7 @@ import { RootState, StoreType } from "./types"
 //导入子模块
 import loginModule from "./login/login"
 import systemModule from "./main/system/system"
+import dashboardModule from "./main/analysis/dashboard"
 
 //导入方法
 import { getPageListData } from "@/network/main/system/system"
@@ -56,7 +57,8 @@ const store = createStore<RootState>({
   },
   modules: {
     loginModule,
-    systemModule
+    systemModule,
+    dashboardModule
   }
 })
 

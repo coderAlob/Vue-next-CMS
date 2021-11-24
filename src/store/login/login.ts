@@ -58,12 +58,13 @@ const loginModule: Module<LoginState, RootState> = {
       commit("changeToken", token)
 
       //发送初始化的请求
-      //子模块中调用根模块中的action的写法
+      //子模块中调用根模块中的actions的写法
       dispatch("getInitialDataAction", null, { root: true })
 
       //2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
       const userInfo = userInfoResult.data
+
       //将用户信息保存到state中
       commit("changeUserInfo", userInfo)
       //将用户信息也添加到本地缓存中
@@ -72,6 +73,7 @@ const loginModule: Module<LoginState, RootState> = {
       //3. 请求用户菜单
       const userMenuResult = await requestUserMenuByRoleId(userInfo.role.id)
       const userMenu = userMenuResult.data
+
       //将用户菜单保存到state中
       commit("changeUserMenu", userMenu)
       //将用户菜单保存到本地缓存中
