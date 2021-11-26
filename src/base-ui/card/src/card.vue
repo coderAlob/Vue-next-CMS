@@ -6,6 +6,7 @@
           <span>{{ title }}</span>
         </div>
       </template>
+      <!-- 预留插槽传入卡片想要展示的信息 -->
       <div class="item">
         <slot></slot>
       </div>
